@@ -1,31 +1,44 @@
 {
-    "name": "cj-notice",
-    "version": "0.1.0",
-    "description": "Plugin vanilla JavaScript para tasks e alerts de confirmação.",
-    "type": "module",
-    "main": "./dist/cj-notice.umd.js",
-    "module": "./dist/cj-notice.es.js",
-    "exports": {
-        ".": {
-            "import": "./dist/cj-notice.es.js",
-            "require": "./dist/cj-notice.umd.js"
-        },
-        "./style.css": "./dist/cj-notice.css"
+  "name": "cj-notice",
+  "version": "0.1.0-alpha.1",
+  "description": "Plugin vanilla JavaScript para tasks e alerts de confirmação.",
+  "type": "module",
+  "main": "./dist/cj-notice.umd.js",
+  "module": "./dist/cj-notice.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/cj-notice.es.js",
+      "require": "./dist/cj-notice.umd.js"
     },
-    "files": [
-        "dist"
-    ],
-    "scripts": {
-        "build": "vite build",
-        "dev": "vite",
-        "test": "vitest run",
-        "lint": "eslint ."
-    },
-    "devDependencies": {
-        "@vitejs/plugin-legacy": "latest",
-        "eslint": "latest",
-        "vite": "latest",
-        "vitest": "latest",
-        "jsdom": "latest"
-    }
+    "./style.css": "./dist/cj-notice.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "notice",
+    "notification",
+    "toast",
+    "alert",
+    "confirm",
+    "vanilla-js"
+  ],
+  "author": "Seu Nome",
+  "license": "MIT",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite",
+    "test": "vitest run",
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "@vitejs/plugin-legacy": "latest",
+    "eslint": "latest",
+    "jsdom": "latest",
+    "vite": "latest",
+    "vitest": "latest"
+  }
 }
