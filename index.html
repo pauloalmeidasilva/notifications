@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="CJNotice.js: notificações empilháveis e confirmações acessíveis para aplicações vanilla JavaScript." />
+    <title>CJNotice.js | Notificações sem atrito</title>
+    <link rel="stylesheet" href="src/styles/landing.css" />
+    <link rel="stylesheet" href="dist/cj-notice.css" />
+</head>
+<body>
+    <header class="site-header">
+        <nav class="nav" aria-label="Navegação principal">
+            <a class="brand" href="./">CJ<span>Notice</span>.js</a>
+            <div class="nav-links">
+                <a href="#recursos">Recursos</a>
+                <a href="#api">API</a>
+                <a href="#demos">Demos</a>
+                <a href="examples/index.html">Playground</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero" aria-labelledby="hero-title">
+            <div>
+                <p class="eyebrow">Vanilla JavaScript / UI feedback</p>
+                <h1 id="hero-title">Notificações que sabem quando aparecer.</h1>
+                <p class="hero-copy">CJNotice.js é um plugin pequeno e flexível para tasks empilháveis e alerts de confirmação. Uma API direta para comunicar estados, proteger ações irreversíveis e manter o foco onde ele importa.</p>
+                <div class="actions">
+                    <a class="button button--primary" href="#demos">Experimentar agora</a>
+                    <a class="button button--secondary" href="examples/index.html">Abrir playground</a>
+                </div>
+            </div>
+            <div class="hero-visual" aria-label="Prévia de duas notificações CJNotice">
+                <div class="mock-window">
+                    <div class="mock-task">
+                        <span class="mock-icon" aria-hidden="true">✓</span>
+                        <div><p class="mock-title">Pagamento aprovado</p><p class="mock-text">A transação foi concluída.</p></div>
+                        <span class="mock-close" aria-hidden="true">×</span>
+                    </div>
+                    <div class="mock-task">
+                        <span class="mock-icon" aria-hidden="true">i</span>
+                        <div><p class="mock-title">Sincronização concluída</p><p class="mock-text">Seus dados estão atualizados.</p></div>
+                        <span class="mock-close" aria-hidden="true">×</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="recursos" aria-labelledby="features-title">
+            <div class="section-heading"><h2 id="features-title">Pequeno no bundle. Completo no comportamento.</h2><p>Os recursos essenciais para feedback de interface, sem framework obrigatório e sem camada de configuração escondida.</p></div>
+            <div class="feature-grid">
+                <article class="card"><span class="card-mark">01</span><h3>Tasks empilháveis</h3><p>Mostre vários estados ao mesmo tempo em seis posições, com duração automática ou controle manual.</p></article>
+                <article class="card"><span class="card-mark">02</span><h3>Confirmações claras</h3><p>Intercepte ações importantes com um alertdialog acessível, foco inicial e suporte à tecla Escape.</p></article>
+                <article class="card"><span class="card-mark">03</span><h3>Estilo controlável</h3><p>Personalize cores, borda, raio, ícone e conteúdo sem abandonar a API simples.</p></article>
+                <article class="card"><span class="card-mark">04</span><h3>Sem acoplamento</h3><p>Funciona com JavaScript vanilla e pode ser usado em qualquer aplicação que aceite módulos ES.</p></article>
+            </div>
+        </section>
+
+        <section class="section" id="inicio" aria-labelledby="start-title">
+            <div class="section-heading"><h2 id="start-title">Comece em poucos passos.</h2><p>Instale o pacote, carregue os estilos e crie uma única instância para reutilizar na aplicação.</p></div>
+            <div class="split">
+                <pre class="code"><code>npm install cj-notice
+
+import CJNotice from "cj-notice";
+import "cj-notice/style.css";
+
+const notice = new CJNotice({ duration: 4000 });
+notice.task({
+    title: "Tudo certo",
+    text: "O arquivo foi enviado.",
+});</code></pre>
+                <div class="note"><strong>Uma instância, vários fluxos.</strong><br />Use <code>task()</code> para feedback imediato e <code>confirm()</code> antes de operações que exigem decisão. O método <code>show()</code> continua disponível como sinônimo explícito de task.</div>
+            </div>
+        </section>
+
+        <section class="section" id="api" aria-labelledby="api-title">
+            <div class="section-heading"><h2 id="api-title">API de implementação</h2><p>Os métodos públicos foram desenhados para serem previsíveis tanto em uma tela simples quanto em um fluxo complexo.</p></div>
+            <div class="api-list">
+                <div class="api-row"><code>new CJNotice(options)</code><p>Cria uma instância. Aceita defaults como <code>duration</code>, <code>position</code>, cores, borda, raio e <code>onConfirmClose</code>.</p></div>
+                <div class="api-row"><code>configure(options)</code><p>Atualiza os defaults da instância e retorna o próprio objeto para encadeamento.</p></div>
+                <div class="api-row"><code>show(options)</code><p>Exibe uma task e retorna seu ID. Use <code>title</code>, <code>text</code>, <code>icon</code>, <code>position</code>, <code>duration</code>, estilos, <code>onClose</code> e <code>onExpire</code>.</p></div>
+                <div class="api-row"><code>task(options)</code><p>Atalho semântico para <code>show(options)</code>, ideal para comunicar tarefas ou estados rápidos.</p></div>
+                <div class="api-row"><code>dismiss(id, reason)</code><p>Remove a task informada. O motivo padrão é <code>dismiss</code>; você pode usar motivos próprios, como <code>manual</code>.</p></div>
+                <div class="api-row"><code>confirm(options)</code><p>Abre um alertdialog. Configure <code>cancelLabel</code>, <code>onCancel</code> e a lista <code>confirmations</code> com <code>label</code> e <code>onClick</code>.</p></div>
+            </div>
+        </section>
+
+        <section class="section" id="demos" aria-labelledby="demos-title">
+            <div class="section-heading"><h2 id="demos-title">Veja a API trabalhando.</h2><p>Estes botões usam a mesma instância da página. Abra o playground para editar cada opção em tempo real.</p></div>
+            <div class="demo-grid">
+                <article class="card demo-card"><div><span class="card-mark">TASK</span><h3>Feedback de sucesso</h3><p>Uma task curta desaparece automaticamente após quatro segundos.</p></div><button class="demo-button demo-button--green" id="success-demo" type="button">Exibir sucesso</button></article>
+                <article class="card demo-card"><div><span class="card-mark">TASK</span><h3>Controle manual</h3><p>Uma task persistente retorna um ID para ser fechada por código.</p></div><button class="demo-button demo-button--orange" id="persistent-demo" type="button">Criar task persistente</button></article>
+                <article class="card demo-card"><div><span class="card-mark">ALERT</span><h3>Decisão protegida</h3><p>Uma confirmação executa um callback somente após a escolha.</p></div><button class="demo-button" id="confirm-demo" type="button">Abrir confirmação</button></article>
+            </div>
+            <p class="demo-status" id="demo-status" role="status" aria-live="polite">Escolha uma demonstração para começar.</p>
+        </section>
+
+        <section class="section" aria-labelledby="practice-title">
+            <div class="section-heading"><h2 id="practice-title">Detalhes que evitam surpresas.</h2><p>Algumas decisões da API são intencionais e ajudam a manter o uso seguro.</p></div>
+            <div class="split">
+                <div class="note"><strong>Ícones SVG e HTML.</strong><br />O campo <code>icon</code> é inserido como HTML. Use apenas conteúdo confiável, como SVGs do próprio projeto. O título e o texto da notificação são tratados como texto simples.</div>
+                <pre class="code"><code>const taskId = notice.task({
+    position: "bottom-right",
+    duration: 0,
+    icon: '&lt;svg aria-hidden="true" ...&gt;...&lt;/svg&gt;',
+    title: "Processando",
+    text: "Aguarde a conclusão.",
+    onClose: ({ reason }) =&gt; console.log(reason),
+});
+
+// Quando terminar:
+notice.dismiss(taskId, "completed");</code></pre>
+            </div>
+        </section>
+
+        <section class="section"><div class="cta"><h2>Teste o comportamento no seu próprio ritmo.</h2><a class="button button--secondary" href="examples/index.html">Ir para o playground</a></div></section>
+    </main>
+
+    <footer><span>CJNotice.js · Plugin vanilla JavaScript para feedback de interface.</span><span><a href="#inicio">Documentação</a> · <span aria-disabled="true">GitHub em breve</span> · <span aria-disabled="true">NPM em breve</span></span></footer>
+
+    <script type="module">
+        import CJNotice from "./dist/cj-notice.es.js";
+
+        const notice = new CJNotice();
+        const status = document.querySelector("#demo-status");
+        let persistentId;
+
+        document.querySelector("#success-demo").addEventListener("click", () => {
+            notice.task({
+                icon: "<strong aria-hidden=\"true\">✓</strong>",
+                title: "Tudo certo",
+                text: "A operação foi concluída.",
+                borderColor: "#16a34a",
+                duration: 4000,
+            });
+            status.textContent = "Task de sucesso criada com duração de 4 segundos.";
+        });
+
+        document.querySelector("#persistent-demo").addEventListener("click", (event) => {
+            if (persistentId) {
+                notice.dismiss(persistentId, "manual");
+                persistentId = undefined;
+                event.currentTarget.textContent = "Criar task persistente";
+                status.textContent = "Task persistente dispensada manualmente.";
+                return;
+            }
+            persistentId = notice.task({
+                icon: "<strong aria-hidden=\"true\">i</strong>",
+                title: "Aguardando ação",
+                text: "Clique novamente para dispensar esta task.",
+                duration: 0,
+                borderColor: "#d97706",
+            });
+            event.currentTarget.textContent = "Dispensar task";
+            status.textContent = "Task persistente criada. O ID está sob controle do código.";
+        });
+
+        document.querySelector("#confirm-demo").addEventListener("click", () => {
+            notice.confirm({
+                icon: "<strong aria-hidden=\"true\">!</strong>",
+                title: "Publicar alterações?",
+                text: "Esta ação deixará a nova versão disponível para sua equipe.",
+                cancelLabel: "Ainda não",
+                onCancel: () => { status.textContent = "Publicação cancelada."; },
+                confirmations: [{
+                    label: "Publicar",
+                    onClick: () => { status.textContent = "Publicação confirmada."; },
+                }],
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,467 +1,589 @@
 <!doctype html>
 <html lang="pt-BR">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>CJNotice.js | Playground</title>
-        <link rel="stylesheet" href="../dist/cj-notice.css" />
-        <style>
-            :root {
-                color: #172033;
-                background: #f4f7fb;
-                font-family: system-ui, sans-serif;
-            }
-            * {
-                box-sizing: border-box;
-            }
-            body {
-                margin: 0;
-            }
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CJNotice.js | Playground</title>
+    <link rel="stylesheet" href="../dist/cj-notice.css" />
+    <style>
+        :root {
+            color: #172033;
+            background: #f4f7fb;
+            font-family: system-ui, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+        }
+
+        main {
+            width: min(1100px, calc(100% - 32px));
+            margin: 0 auto;
+            padding: 48px 0 72px;
+        }
+
+        header {
+            margin-bottom: 28px;
+        }
+
+        h1 {
+            margin: 0 0 8px;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            letter-spacing: -0.04em;
+        }
+
+        header p {
+            max-width: 620px;
+            margin: 0;
+            color: #536176;
+            line-height: 1.6;
+        }
+
+        .playground {
+            display: grid;
+            grid-template-columns: minmax(280px, 390px) 1fr;
+            gap: 24px;
+            align-items: start;
+        }
+
+        .panel,
+        .preview {
+            border: 1px solid #dce3ee;
+            border-radius: 12px;
+            background: #fff;
+            box-shadow: 0 12px 32px rgb(24 39 75 / 7%);
+        }
+
+        .panel {
+            padding: 22px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 20px;
+            padding: 4px;
+            border-radius: 8px;
+            background: #eef2f7;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 9px 12px;
+            border: 0;
+            border-radius: 6px;
+            color: #536176;
+            background: transparent;
+            cursor: pointer;
+            font: inherit;
+            font-weight: 700;
+        }
+
+        .tab[aria-selected="true"] {
+            color: #172033;
+            background: #fff;
+            box-shadow: 0 2px 8px rgb(24 39 75 / 10%);
+        }
+
+        .form-section {
+            display: grid;
+            gap: 14px;
+        }
+
+        .field {
+            display: grid;
+            gap: 6px;
+        }
+
+        label {
+            color: #344054;
+            font-size: 0.82rem;
+            font-weight: 700;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            min-height: 40px;
+            padding: 8px 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            color: #172033;
+            background: #fff;
+            font: inherit;
+        }
+
+        textarea {
+            min-height: 74px;
+            resize: vertical;
+            font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+            font-size: 0.8rem;
+            line-height: 1.4;
+        }
+
+        input[type="color"] {
+            height: 40px;
+            padding: 4px;
+            cursor: pointer;
+        }
+
+        input[type="range"] {
+            min-height: auto;
+            padding: 0;
+            accent-color: #2563eb;
+        }
+
+        .inline {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .range-value {
+            color: #64748b;
+            font-size: 0.78rem;
+            font-weight: 400;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 6px;
+        }
+
+        button.primary {
+            padding: 10px 14px;
+            border: 0;
+            border-radius: 6px;
+            color: #fff;
+            background: #2563eb;
+            cursor: pointer;
+            font: inherit;
+            font-weight: 700;
+        }
+
+        button.secondary {
+            padding: 10px 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            color: #344054;
+            background: #fff;
+            cursor: pointer;
+            font: inherit;
+            font-weight: 700;
+        }
+
+        .preview {
+            min-height: 560px;
+            padding: 24px;
+            background: linear-gradient(145deg, #ffffff, #eef4fa);
+        }
+
+        .preview h2 {
+            margin: 0 0 6px;
+            font-size: 1rem;
+        }
+
+        .preview p {
+            margin: 0 0 28px;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .preview-stage {
+            display: grid;
+            min-height: 390px;
+            place-items: center;
+            border: 1px dashed #b8c5d6;
+            border-radius: 8px;
+            color: #64748b;
+            text-align: center;
+        }
+
+        .preview-stage strong {
+            display: block;
+            margin-bottom: 6px;
+            color: #344054;
+        }
+
+        .guide {
+            margin-top: 28px;
+        }
+
+        .guide-header {
+            margin-bottom: 16px;
+        }
+
+        .guide-header h2 {
+            margin: 0 0 6px;
+            font-size: 1.35rem;
+        }
+
+        .guide-header p {
+            margin: 0;
+            color: #536176;
+            line-height: 1.6;
+        }
+
+        .guide-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .guide-card {
+            padding: 20px;
+            border: 1px solid #dce3ee;
+            border-radius: 12px;
+            background: #fff;
+            box-shadow: 0 12px 32px rgb(24 39 75 / 7%);
+        }
+
+        .guide-card h3 {
+            margin: 0 0 6px;
+            font-size: 1rem;
+        }
+
+        .guide-card p {
+            margin: 0 0 14px;
+            color: #536176;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        pre {
+            margin: 0;
+            padding: 14px;
+            overflow-x: auto;
+            border-radius: 8px;
+            color: #e2e8f0;
+            background: #172033;
+            font: 0.78rem/1.55 ui-monospace, SFMono-Regular, Consolas, monospace;
+        }
+
+        .guide-notes {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .guide-note {
+            padding: 14px;
+            border-left: 3px solid #2563eb;
+            color: #536176;
+            background: #eef4fa;
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+
+        .guide-note strong {
+            display: block;
+            margin-bottom: 4px;
+            color: #172033;
+        }
+
+        @media (max-width: 780px) {
             main {
-                width: min(1100px, calc(100% - 32px));
-                margin: 0 auto;
-                padding: 48px 0 72px;
+                padding-top: 28px;
             }
-            header {
-                margin-bottom: 28px;
-            }
-            h1 {
-                margin: 0 0 8px;
-                font-size: clamp(2rem, 5vw, 3.5rem);
-                letter-spacing: -0.04em;
-            }
-            header p {
-                max-width: 620px;
-                margin: 0;
-                color: #536176;
-                line-height: 1.6;
-            }
+
             .playground {
-                display: grid;
-                grid-template-columns: minmax(280px, 390px) 1fr;
-                gap: 24px;
-                align-items: start;
+                grid-template-columns: 1fr;
             }
-            .panel,
+
             .preview {
-                border: 1px solid #dce3ee;
-                border-radius: 12px;
-                background: #fff;
-                box-shadow: 0 12px 32px rgb(24 39 75 / 7%);
+                min-height: 360px;
             }
-            .panel {
-                padding: 22px;
+
+            .guide-grid,
+            .guide-notes {
+                grid-template-columns: 1fr;
             }
-            .tabs {
-                display: flex;
-                gap: 6px;
-                margin-bottom: 20px;
-                padding: 4px;
-                border-radius: 8px;
-                background: #eef2f7;
-            }
-            .tab {
-                flex: 1;
-                padding: 9px 12px;
-                border: 0;
-                border-radius: 6px;
-                color: #536176;
-                background: transparent;
-                cursor: pointer;
-                font: inherit;
-                font-weight: 700;
-            }
-            .tab[aria-selected="true"] {
-                color: #172033;
-                background: #fff;
-                box-shadow: 0 2px 8px rgb(24 39 75 / 10%);
-            }
-            .form-section {
-                display: grid;
-                gap: 14px;
-            }
-            .field {
-                display: grid;
-                gap: 6px;
-            }
-            label {
-                color: #344054;
-                font-size: 0.82rem;
-                font-weight: 700;
-            }
-            input,
-            select,
-            textarea {
-                width: 100%;
-                min-height: 40px;
-                padding: 8px 10px;
-                border: 1px solid #cbd5e1;
-                border-radius: 6px;
-                color: #172033;
-                background: #fff;
-                font: inherit;
-            }
-            textarea {
-                min-height: 74px;
-                resize: vertical;
-                font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
-                font-size: 0.8rem;
-                line-height: 1.4;
-            }
-            input[type="color"] {
-                height: 40px;
-                padding: 4px;
-                cursor: pointer;
-            }
-            input[type="range"] {
-                min-height: auto;
-                padding: 0;
-                accent-color: #2563eb;
-            }
-            .inline {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 12px;
-            }
-            .range-value {
-                color: #64748b;
-                font-size: 0.78rem;
-                font-weight: 400;
-            }
-            .actions {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 8px;
-                margin-top: 6px;
-            }
-            button.primary {
-                padding: 10px 14px;
-                border: 0;
-                border-radius: 6px;
-                color: #fff;
-                background: #2563eb;
-                cursor: pointer;
-                font: inherit;
-                font-weight: 700;
-            }
-            button.secondary {
-                padding: 10px 14px;
-                border: 1px solid #cbd5e1;
-                border-radius: 6px;
-                color: #344054;
-                background: #fff;
-                cursor: pointer;
-                font: inherit;
-                font-weight: 700;
-            }
-            .preview {
-                min-height: 560px;
-                padding: 24px;
-                background: linear-gradient(145deg, #ffffff, #eef4fa);
-            }
-            .preview h2 {
-                margin: 0 0 6px;
-                font-size: 1rem;
-            }
-            .preview p {
-                margin: 0 0 28px;
-                color: #64748b;
-                font-size: 0.9rem;
-            }
-            .preview-stage {
-                display: grid;
-                min-height: 390px;
-                place-items: center;
-                border: 1px dashed #b8c5d6;
-                border-radius: 8px;
-                color: #64748b;
-                text-align: center;
-            }
-            .preview-stage strong {
-                display: block;
-                margin-bottom: 6px;
-                color: #344054;
-            }
-            @media (max-width: 780px) {
-                main {
-                    padding-top: 28px;
-                }
-                .playground {
-                    grid-template-columns: 1fr;
-                }
-                .preview {
-                    min-height: 360px;
-                }
-            }
-        </style>
-    </head>
-    <body>
-        <main>
-            <header>
-                <h1>CJNotice.js</h1>
-                <p>
-                    Altere os campos e veja a notificação ou o alerta refletirem
-                    as configurações em tempo real.
-                </p>
-            </header>
-            <section class="playground">
-                <form class="panel" id="notice-form">
-                    <div
-                        class="tabs"
-                        role="tablist"
-                        aria-label="Tipo de componente"
-                    >
-                        <button
-                            class="tab"
-                            type="button"
-                            role="tab"
-                            aria-selected="true"
-                            data-mode="task"
-                        >
-                            Task
-                        </button>
-                        <button
-                            class="tab"
-                            type="button"
-                            role="tab"
-                            aria-selected="false"
-                            data-mode="confirm"
-                        >
-                            Confirmação
-                        </button>
+        }
+        .cj-notice>.cj-notice__icon img {
+            display: block;
+            width: 24px;
+            height: 24px;
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <header>
+            <h1>CJNotice.js</h1>
+            <p>
+                Altere os campos e veja a notificação ou o alerta refletirem
+                as configurações em tempo real.
+            </p>
+        </header>
+        <section class="playground">
+            <form class="panel" id="notice-form">
+                <div class="tabs" role="tablist" aria-label="Tipo de componente">
+                    <button class="tab" type="button" role="tab" aria-selected="true" data-mode="task">
+                        Task
+                    </button>
+                    <button class="tab" type="button" role="tab" aria-selected="false" data-mode="confirm">
+                        Confirmação
+                    </button>
+                </div>
+                <div class="form-section">
+                    <div class="field">
+                        <label for="icon">Ícone (HTML/SVG)</label>
+                        <textarea id="icon" spellcheck="false"><span aria-hidden="true">✓</span></textarea>
                     </div>
-                    <div class="form-section">
+                    <div class="field">
+                        <label for="title">Título</label>
+                        <input id="title" value="Tudo certo" />
+                    </div>
+                    <div class="field">
+                        <label for="text">Texto</label>
+                        <textarea id="text" spellcheck="false">A operação foi realizada com sucesso.</textarea>
+                    </div>
+                    <div class="field task-only">
+                        <label for="position">Posição</label>
+                        <select id="position">
+                            <option>top-left</option>
+                            <option>top-center</option>
+                            <option selected>top-right</option>
+                            <option>bottom-left</option>
+                            <option>bottom-center</option>
+                            <option>bottom-right</option>
+                        </select>
+                    </div>
+                    <div class="field task-only">
+                        <label for="duration">Duração
+                            <span class="range-value" id="duration-value">5000 ms</span></label>
+                        <input id="duration" type="range" min="0" max="15000" step="500" value="5000" />
+                    </div>
+                    <div class="inline">
                         <div class="field">
-                            <label for="icon">Ícone (HTML/SVG)</label
-                            ><textarea id="icon" spellcheck="false">
-<span aria-hidden="true">✓</span></textarea
-                            >
-                        </div>
-                        <div class="field">
-                            <label for="title">Título</label
-                            ><input id="title" value="Tudo certo" />
-                        </div>
-                        <div class="field">
-                            <label for="text">Texto</label
-                            ><input
-                                id="text"
-                                value="A operação foi realizada com sucesso."
-                            />
-                        </div>
-                        <div class="field task-only">
-                            <label for="position">Posição</label
-                            ><select id="position">
-                                <option>top-left</option>
-                                <option>top-center</option>
-                                <option selected>top-right</option>
-                                <option>bottom-left</option>
-                                <option>bottom-center</option>
-                                <option>bottom-right</option>
-                            </select>
-                        </div>
-                        <div class="field task-only">
-                            <label for="duration"
-                                >Duração
-                                <span class="range-value" id="duration-value"
-                                    >5000 ms</span
-                                ></label
-                            ><input
-                                id="duration"
-                                type="range"
-                                min="0"
-                                max="15000"
-                                step="500"
-                                value="5000"
-                            />
-                        </div>
-                        <div class="inline">
-                            <div class="field">
-                                <label for="background">Fundo</label
-                                ><input
-                                    id="background"
-                                    type="color"
-                                    value="#ffffff"
-                                />
-                            </div>
-                            <div class="field">
-                                <label for="color">Texto</label
-                                ><input
-                                    id="color"
-                                    type="color"
-                                    value="#182230"
-                                />
-                            </div>
-                        </div>
-                        <div class="inline">
-                            <div class="field">
-                                <label for="border-color">Borda</label
-                                ><input
-                                    id="border-color"
-                                    type="color"
-                                    value="#2563eb"
-                                />
-                            </div>
-                            <div class="field">
-                                <label for="border-width"
-                                    >Espessura
-                                    <span
-                                        class="range-value"
-                                        id="border-width-value"
-                                        >4 px</span
-                                    ></label
-                                ><input
-                                    id="border-width"
-                                    type="range"
-                                    min="0"
-                                    max="16"
-                                    value="4"
-                                />
-                            </div>
+                            <label for="background">Fundo</label>
+                            <input id="background" type="color" value="#ffffff" />
                         </div>
                         <div class="field">
-                            <label for="radius"
-                                >Raio
-                                <span class="range-value" id="radius-value"
-                                    >8 px</span
-                                ></label
-                            ><input
-                                id="radius"
-                                type="range"
-                                min="0"
-                                max="32"
-                                value="8"
-                            />
-                        </div>
-                        <div class="field confirm-only" hidden>
-                            <label for="cancel-label"
-                                >Texto do cancelamento</label
-                            ><input id="cancel-label" value="Cancelar" />
-                        </div>
-                        <div class="field confirm-only" hidden>
-                            <label for="confirm-label"
-                                >Texto da confirmação</label
-                            ><input id="confirm-label" value="Confirmar" />
-                        </div>
-                        <div class="actions">
-                            <button class="primary" id="show" type="submit">
-                                Exibir agora
-                            </button>
-                            <button class="secondary" id="clear" type="button">
-                                Limpar prévia
-                            </button>
+                            <label for="color">Texto</label>
+                            <input id="color" type="color" value="#182230" />
                         </div>
                     </div>
-                </form>
-                <div class="preview">
-                    <h2>Prévia em execução</h2>
-                    <p>
-                        A alteração é aplicada enquanto você edita. Use “Exibir
-                        agora” para criar uma nova instância.
-                    </p>
-                    <div class="preview-stage">
-                        <div>
-                            <strong>Área de demonstração</strong>As notificações
-                            aparecem nas posições configuradas.
+                    <div class="inline">
+                        <div class="field">
+                            <label for="border-color">Borda</label>
+                            <input id="border-color" type="color" value="#2563eb" />
                         </div>
+                        <div class="field">
+                            <label for="border-width">Espessura
+                                <span class="range-value" id="border-width-value">4 px</span></label>
+                            <input id="border-width" type="range" min="0" max="16" value="4" />
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="radius">Raio
+                            <span class="range-value" id="radius-value">8 px</span>
+                        </label>
+                        <input id="radius" type="range" min="0" max="32" value="8" />
+                    </div>
+                    <div class="field confirm-only" hidden>
+                        <label for="cancel-label">Texto do cancelamento</label>
+                        <input id="cancel-label" value="Cancelar" />
+                    </div>
+                    <div class="field confirm-only" hidden>
+                        <label for="confirm-label">Texto da confirmação</label>
+                        <input id="confirm-label" value="Confirmar" />
+                    </div>
+                    <div class="actions">
+                        <button class="primary" id="show" type="submit">
+                            Exibir agora
+                        </button>
+                        <button class="secondary" id="clear" type="button">
+                            Limpar prévia
+                        </button>
                     </div>
                 </div>
-            </section>
-        </main>
-        <script type="module">
-            import CJNotice from "../dist/cj-notice.es.js";
+            </form>
+            <div class="preview">
+                <h2>Prévia em execução</h2>
+                <p>
+                    A alteração é aplicada enquanto você edita. Use “Exibir
+                    agora” para criar uma nova instância.
+                </p>
+                <div class="preview-stage">
+                    <div>
+                        <strong>Área de demonstração</strong>As notificações
+                        aparecem nas posições configuradas.
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="guide" aria-labelledby="guide-title">
+            <div class="guide-header">
+                <h2 id="guide-title">Como usar no seu projeto</h2>
+                <p>
+                    Instancie o plugin uma vez e use tasks para avisos rápidos
+                    ou confirmações antes de ações importantes.
+                </p>
+            </div>
+            <div class="guide-grid">
+                <article class="guide-card">
+                    <h3>Task: aviso temporário</h3>
+                    <p>
+                        Use <code>task()</code> para informar o resultado de uma
+                        ação. O ID retornado pode ser usado para dispensar a
+                        notificação manualmente.
+                    </p>
+                    <pre><code>const notice = new CJNotice({ duration: 4000 });
 
-            const notice = new CJNotice({ duration: 0 });
-            const form = document.querySelector("#notice-form");
-            const fields = Object.fromEntries(
-                [...form.querySelectorAll("input, select, textarea")].map(
-                    (field) => [field.id, field],
-                ),
-            );
-            let mode = "task";
-            let taskId;
+const taskId = notice.task({
+    position: "top-right",
+    icon: "&lt;strong&gt;✓&lt;/strong&gt;",
+    title: "Tudo certo",
+    text: "O arquivo foi enviado.",
+});
 
-            const values = () => ({
-                icon: fields.icon.value,
-                title: fields.title.value,
-                text: fields.text.value,
-                background: fields.background.value,
-                color: fields.color.value,
-                borderColor: fields["border-color"].value,
-                borderWidth: `${fields["border-width"].value}px`,
-                radius: `${fields.radius.value}px`,
-            });
+// Remova antes do tempo, se necessário:
+notice.dismiss(taskId, "manual");</code></pre>
+                </article>
+                <article class="guide-card">
+                    <h3>Alert: confirmação</h3>
+                    <p>
+                        Use <code>confirm()</code> quando a pessoa precisar
+                        escolher entre cancelar e confirmar uma ação.
+                    </p>
+                    <pre><code>notice.confirm({
+    icon: "&lt;strong&gt;!&lt;/strong&gt;",
+    title: "Excluir arquivo?",
+    text: "Esta ação não pode ser desfeita.",
+    cancelLabel: "Voltar",
+    confirmations: [{
+        label: "Excluir",
+        onClick: () =&gt; excluirArquivo(),
+    }],
+});</code></pre>
+                </article>
+            </div>
+            <div class="guide-notes">
+                <div class="guide-note">
+                    <strong>Duração</strong>
+                    Use <code>duration: 0</code> para manter uma task até que
+                    ela seja fechada ou dispensada.
+                </div>
+                <div class="guide-note">
+                    <strong>Posições</strong>
+                    Tasks aceitam seis posições, como <code>top-right</code> e
+                    <code>bottom-center</code>.
+                </div>
+                <div class="guide-note">
+                    <strong>Ícones</strong>
+                    O campo aceita HTML ou SVG confiável. O texto da mensagem
+                    continua sendo inserido como texto simples.
+                </div>
+            </div>
+        </section>
+    </main>
+    <script type="module">
+        import CJNotice from "../dist/cj-notice.es.js";
 
-            const render = ({ replacePreview = true } = {}) => {
-                const options = values();
-                if (mode === "task") {
-                    // Adiciona a hora atual ao título da notificação
-                    const horaAtual = new Date().toLocaleTimeString('pt-BR');
-                    options.title = `${options.title} - ${horaAtual}`;
+        const notice = new CJNotice({ duration: 0 });
+        const form = document.querySelector("#notice-form");
+        const fields = Object.fromEntries(
+            [...form.querySelectorAll("input, select, textarea")].map(
+                (field) => [field.id, field],
+            ),
+        );
+        let mode = "task";
+        let taskId;
 
-                    options.position = fields.position.value;
-                    options.duration = Number(fields.duration.value);
-                    if (replacePreview && taskId)
-                        notice.dismiss(taskId, "preview");
-                    taskId = notice.show(options);
-                } else {
-                    options.cancelLabel = fields["cancel-label"].value;
-                    options.confirmations = [
-                        {
-                            label: fields["confirm-label"].value,
-                            onClick: () => console.log("confirmado"),
-                        },
-                    ];
-                    notice.confirm(options);
-                }
-            };
+        const values = () => ({
+            // se o campo estiver vazio preencha com o icone do asset
+            icon: fields.icon.value === "" ? '<img src="assets/check-circle.svg" alt="" />' : fields.icon.value,
+            title: fields.title.value,
+            text: fields.text.value,
+            background: fields.background.value,
+            color: fields.color.value,
+            borderColor: fields["border-color"].value,
+            borderWidth: `${fields["border-width"].value}px`,
+            radius: `${fields.radius.value}px`,
+        });
 
-            const updateLabels = () => {
-                document.querySelector("#duration-value").textContent =
-                    `${fields.duration.value} ms${fields.duration.value === "0" ? " (manual)" : ""}`;
-                document.querySelector("#border-width-value").textContent =
-                    `${fields["border-width"].value} px`;
-                document.querySelector("#radius-value").textContent =
-                    `${fields.radius.value} px`;
-            };
+        const render = ({ replacePreview = true } = {}) => {
+            const options = values();
+            if (mode === "task") {
+                // Adiciona a hora atual ao título da notificação
+                const horaAtual = new Date().toLocaleTimeString("pt-BR");
+                options.title = `${options.title} - ${horaAtual}`;
 
-            form.addEventListener("input", () => {
-                updateLabels();
-                render();
-            });
-            form.addEventListener("submit", (event) => {
-                event.preventDefault();
-                render({ replacePreview: false });
-            });
-            document.querySelector("#clear").addEventListener("click", () => {
-                if (taskId) {
-                    notice.dismiss(taskId);
-                    taskId = undefined;
-                }
-            });
-            document.querySelectorAll("[data-mode]").forEach((tab) =>
-                tab.addEventListener("click", () => {
-                    mode = tab.dataset.mode;
-                    document
-                        .querySelectorAll("[data-mode]")
-                        .forEach((item) =>
-                            item.setAttribute(
-                                "aria-selected",
-                                String(item === tab),
-                            ),
-                        );
-                    document.querySelectorAll(".task-only").forEach((item) => {
-                        item.hidden = mode !== "task";
-                    });
-                    document
-                        .querySelectorAll(".confirm-only")
-                        .forEach((item) => {
-                            item.hidden = mode !== "confirm";
-                        });
-                    render();
-                }),
-            );
+                options.position = fields.position.value;
+                options.duration = Number(fields.duration.value);
+                if (replacePreview && taskId)
+                    notice.dismiss(taskId, "preview");
+                taskId = notice.show(options);
+            } else {
+                options.cancelLabel = fields["cancel-label"].value;
+                options.confirmations = [
+                    {
+                        label: fields["confirm-label"].value,
+                        onClick: () => console.log("confirmado"),
+                    },
+                ];
+                notice.confirm(options);
+            }
+        };
+
+        const updateLabels = () => {
+            document.querySelector("#duration-value").textContent =
+                `${fields.duration.value} ms${fields.duration.value === "0" ? " (manual)" : ""}`;
+            document.querySelector("#border-width-value").textContent =
+                `${fields["border-width"].value} px`;
+            document.querySelector("#radius-value").textContent =
+                `${fields.radius.value} px`;
+        };
+
+        form.addEventListener("input", () => {
             updateLabels();
             render();
-        </script>
-    </body>
+        });
+        form.addEventListener("submit", (event) => {
+            event.preventDefault();
+            render({ replacePreview: false });
+        });
+        document.querySelector("#clear").addEventListener("click", () => {
+            if (taskId) {
+                notice.dismiss(taskId);
+                taskId = undefined;
+            }
+        });
+        document.querySelectorAll("[data-mode]").forEach((tab) =>
+            tab.addEventListener("click", () => {
+                mode = tab.dataset.mode;
+                document
+                    .querySelectorAll("[data-mode]")
+                    .forEach((item) =>
+                        item.setAttribute(
+                            "aria-selected",
+                            String(item === tab),
+                        ),
+                    );
+                document.querySelectorAll(".task-only").forEach((item) => {
+                    item.hidden = mode !== "task";
+                });
+                document
+                    .querySelectorAll(".confirm-only")
+                    .forEach((item) => {
+                        item.hidden = mode !== "confirm";
+                    });
+            }),
+        );
+        updateLabels();
+        // render();
+    </script>
+</body>
+
 </html>

@@ -74,7 +74,9 @@
     pointer-events: none;
 }
 
-.cj-notice__icon {
+.cj-notice > .cj-notice__icon {
+    align-self: center;
+    font-size: 1.35rem;
     line-height: 1;
 }
 .cj-notice__title {
