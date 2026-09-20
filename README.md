@@ -109,11 +109,14 @@ As tasks aceitam:
 | Opção | Descrição |
 | --- | --- |
 | `position` | `top-left`, `top-center`, `top-right`, `bottom-left`, `bottom-center` ou `bottom-right`. |
-| `title` / `text` | Conteúdo textual da task. |
+| `title` | Título. |
+| `text` | Conteúdo textual. |
 | `icon` | HTML ou SVG confiável para o ícone. |
 | `duration` | Tempo em milissegundos. Use `0` para controle manual. |
-| `background` / `color` | Cores do fundo e do texto. |
-| `borderColor` / `borderWidth` | Cor e espessura da borda lateral. |
+| `background` | Cores do fundo. |
+| `color` | Cores do texto. |
+| `borderColor` | Cor da borda lateral. |
+| `borderWidth` | Espessura da borda lateral. |
 | `radius` | Raio dos cantos. |
 | `onClose` | Callback chamado ao fechar a task. Recebe `{ id, reason }`. |
 | `onExpire` | Callback chamado quando a duração termina. Recebe o ID. |
