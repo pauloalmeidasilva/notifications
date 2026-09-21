@@ -14,15 +14,51 @@ var e = [
 	borderColor: "#2563eb",
 	borderWidth: "4px",
 	radius: "8px"
-}, n = 0;
-function r(e, t, n) {
+}, n = {
+	success: {
+		background: "#dcfce7",
+		color: "#166534",
+		borderColor: "#22c55e",
+		icon: "&#10003;"
+	},
+	error: {
+		background: "#fee2e2",
+		color: "#991b1b",
+		borderColor: "#ef4444",
+		icon: "&#10005;"
+	},
+	warning: {
+		background: "#fef3c7",
+		color: "#92400e",
+		borderColor: "#f59e0b",
+		icon: "&#9888;"
+	},
+	info: {
+		background: "#dbeafe",
+		color: "#0c2340",
+		borderColor: "#3b82f6",
+		icon: "&#8505;"
+	}
+}, r = 0;
+function i(e, t, n) {
 	let r = document.createElement(e);
 	return r.className = t, n !== void 0 && (r.textContent = n), r;
 }
-function i(e, t) {
+function a(e, t) {
 	e.style.setProperty("--cj-notice-background", t.background), e.style.setProperty("--cj-notice-color", t.color), e.style.setProperty("--cj-notice-border-color", t.borderColor), e.style.setProperty("--cj-notice-border-width", t.borderWidth), e.style.setProperty("--cj-notice-radius", t.radius);
 }
-var a = class {
+function o(e, t) {
+	let r = n[t.type] || {};
+	return {
+		...e,
+		...r,
+		...t
+	};
+}
+function s(e, t) {
+	n[t] && (e.dataset.type = t);
+}
+var c = class {
 	constructor(e = {}) {
 		this.options = {
 			...t,
@@ -35,29 +71,50 @@ var a = class {
 			...e
 		}, this;
 	}
-	show(a = {}) {
-		let o = {
-			...this.options,
-			...a
-		}, s = e.includes(o.position) ? o.position : t.position, c = o.id || `cj-notice-${++n}`, l = this.#e(s), u = r("article", "cj-notice");
-		if (u.dataset.noticeId = c, u.setAttribute("role", o.role || "status"), i(u, o), o.icon) {
-			let e = r("span", "cj-notice__icon");
-			e.setAttribute("aria-hidden", "true"), e.innerHTML = o.icon, u.append(e);
+	show(n = {}) {
+		let c = o(this.options, n), l = e.includes(c.position) ? c.position : t.position, u = c.id || `cj-notice-${++r}`, d = this.#e(l), f = i("article", "cj-notice");
+		if (f.dataset.noticeId = u, s(f, c.type), f.setAttribute("role", c.role || "status"), a(f, c), c.icon) {
+			let e = i("span", "cj-notice__icon");
+			e.setAttribute("aria-hidden", "true"), e.innerHTML = c.icon, f.append(e);
 		}
-		let d = r("div", "cj-notice__content");
-		o.title && d.append(r("h3", "cj-notice__title", o.title)), o.text && d.append(r("p", "cj-notice__text", o.text)), u.append(d);
-		let f = r("button", "cj-notice__close", "×");
-		f.type = "button", f.setAttribute("aria-label", o.closeLabel || "Fechar notificação"), f.addEventListener("click", () => this.dismiss(c, "close")), u.append(f), l.append(u);
-		let p = o.duration > 0 ? window.setTimeout(() => this.dismiss(c, "timeout"), o.duration) : null;
-		return this.tasks.set(c, {
-			element: u,
-			timer: p,
-			onClose: o.onClose,
-			onExpire: o.onExpire
-		}), c;
+		let p = i("div", "cj-notice__content");
+		c.title && p.append(i("h3", "cj-notice__title", c.title)), c.text && p.append(i("p", "cj-notice__text", c.text)), f.append(p);
+		let m = i("button", "cj-notice__close", "×");
+		m.type = "button", m.setAttribute("aria-label", c.closeLabel || "Fechar notificação"), m.addEventListener("click", () => this.dismiss(u, "close")), f.append(m), d.append(f);
+		let h = c.duration > 0 ? window.setTimeout(() => this.dismiss(u, "timeout"), c.duration) : null;
+		return this.tasks.set(u, {
+			element: f,
+			timer: h,
+			onClose: c.onClose,
+			onExpire: c.onExpire
+		}), u;
 	}
 	task(e = {}) {
 		return this.show(e);
+	}
+	success(e = {}) {
+		return this.show({
+			...e,
+			type: "success"
+		});
+	}
+	error(e = {}) {
+		return this.show({
+			...e,
+			type: "error"
+		});
+	}
+	warning(e = {}) {
+		return this.show({
+			...e,
+			type: "warning"
+		});
+	}
+	info(e = {}) {
+		return this.show({
+			...e,
+			type: "info"
+		});
 	}
 	dismiss(e, t = "dismiss") {
 		let n = this.tasks.get(e);
@@ -68,39 +125,60 @@ var a = class {
 	}
 	confirm(e = {}) {
 		this.activeConfirm && this.#t("replaced");
-		let t = {
-			...this.options,
-			...e
-		}, a = document.activeElement, o = r("div", "cj-notice-modal");
-		o.setAttribute("role", "presentation");
-		let s = r("section", "cj-notice-modal__dialog");
-		s.setAttribute("role", "alertdialog"), s.setAttribute("aria-modal", "true"), i(s, t);
-		let c = r("div", "cj-notice-modal__content");
+		let t = o(this.options, e), n = document.activeElement, c = i("div", "cj-notice-modal");
+		c.setAttribute("role", "presentation");
+		let l = i("section", "cj-notice-modal__dialog");
+		s(l, t.type), l.setAttribute("role", "alertdialog"), l.setAttribute("aria-modal", "true"), a(l, t);
+		let u = i("div", "cj-notice-modal__content");
 		if (t.icon) {
-			let e = r("span", "cj-notice__icon");
-			e.setAttribute("aria-hidden", "true"), e.innerHTML = t.icon, c.append(e);
+			let e = i("span", "cj-notice__icon");
+			e.setAttribute("aria-hidden", "true"), e.innerHTML = t.icon, u.append(e);
 		}
-		let l = r("div"), u = r("h2", "cj-notice-modal__title", t.title || "Confirmação");
-		u.id = `cj-notice-title-${++n}`, s.setAttribute("aria-labelledby", u.id), l.append(u), t.text && l.append(r("p", "cj-notice-modal__text", t.text)), c.append(l), s.append(c);
-		let d = r("div", "cj-notice-modal__actions");
+		let d = i("div"), f = i("h2", "cj-notice-modal__title", t.title || "Confirmação");
+		f.id = `cj-notice-title-${++r}`, l.setAttribute("aria-labelledby", f.id), d.append(f), t.text && d.append(i("p", "cj-notice-modal__text", t.text)), u.append(d), l.append(u);
+		let p = i("div", "cj-notice-modal__actions");
 		return [{
 			label: t.cancelLabel || "Cancelar",
 			onClick: t.onCancel
 		}, ...t.confirmations || []].forEach((e, t) => {
-			let n = r("button", `cj-notice__action${t === 0 ? " cj-notice__action--cancel" : ""}`, e.label);
+			let n = i("button", `cj-notice__action${t === 0 ? " cj-notice__action--cancel" : ""}`, e.label);
 			n.type = "button", n.addEventListener("click", () => {
 				e.onClick?.(), this.#t(t === 0 ? "cancel" : "confirm");
-			}), d.append(n);
-		}), s.append(d), o.append(s), document.body.append(o), this.activeConfirm = {
-			modal: o,
-			previousFocus: a
-		}, d.querySelector("button")?.focus(), o.addEventListener("keydown", (e) => {
-			e.key === "Escape" && this.#t("escape"), e.key === "Tab" && this.#n(e, s);
+			}), p.append(n);
+		}), l.append(p), c.append(l), document.body.append(c), this.activeConfirm = {
+			modal: c,
+			previousFocus: n
+		}, p.querySelector("button")?.focus(), c.addEventListener("keydown", (e) => {
+			e.key === "Escape" && this.#t("escape"), e.key === "Tab" && this.#n(e, l);
 		}), this;
+	}
+	confirmSuccess(e = {}) {
+		return this.confirm({
+			...e,
+			type: "success"
+		});
+	}
+	confirmError(e = {}) {
+		return this.confirm({
+			...e,
+			type: "error"
+		});
+	}
+	confirmWarning(e = {}) {
+		return this.confirm({
+			...e,
+			type: "warning"
+		});
+	}
+	confirmInfo(e = {}) {
+		return this.confirm({
+			...e,
+			type: "info"
+		});
 	}
 	#e(e) {
 		let t = this.containers.get(e);
-		return t || (t = r("div", "cj-notice-container"), t.dataset.position = e, t.setAttribute("aria-live", "polite"), document.body.append(t), this.containers.set(e, t)), t;
+		return t || (t = i("div", "cj-notice-container"), t.dataset.position = e, t.setAttribute("aria-live", "polite"), document.body.append(t), this.containers.set(e, t)), t;
 	}
 	#t(e) {
 		if (!this.activeConfirm) return;
@@ -113,8 +191,8 @@ var a = class {
 		let r = n[0], i = n[n.length - 1];
 		e.shiftKey && document.activeElement === r ? (e.preventDefault(), i.focus()) : !e.shiftKey && document.activeElement === i && (e.preventDefault(), r.focus());
 	}
-}, o = a;
+}, l = c;
 //#endregion
-export { a as CJNotice, o as default };
+export { c as CJNotice, l as default };
 
 //# sourceMappingURL=cj-notice.es.js.map

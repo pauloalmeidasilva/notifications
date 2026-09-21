@@ -17,6 +17,33 @@ const DEFAULTS = {
     radius: "8px",
 };
 
+const TYPE_PRESETS = {
+    success: {
+        background: "#dcfce7",
+        color: "#166534",
+        borderColor: "#22c55e",
+        icon: "&#10003;",
+    },
+    error: {
+        background: "#fee2e2",
+        color: "#991b1b",
+        borderColor: "#ef4444",
+        icon: "&#10005;",
+    },
+    warning: {
+        background: "#fef3c7",
+        color: "#92400e",
+        borderColor: "#f59e0b",
+        icon: "&#9888;",
+    },
+    info: {
+        background: "#dbeafe",
+        color: "#0c2340",
+        borderColor: "#3b82f6",
+        icon: "&#8505;",
+    },
+};
+
 let nextId = 0;
 
 function createElement(tag, className, text) {
@@ -34,6 +61,15 @@ function applyStyle(element, options) {
     element.style.setProperty("--cj-notice-radius", options.radius);
 }
 
+function resolveOptions(defaults, options) {
+    const preset = TYPE_PRESETS[options.type] || {};
+    return { ...defaults, ...preset, ...options };
+}
+
+function setType(element, type) {
+    if (TYPE_PRESETS[type]) element.dataset.type = type;
+}
+
 export default class CJNotice {
     constructor(options = {}) {
         this.options = { ...DEFAULTS, ...options };
@@ -48,7 +84,7 @@ export default class CJNotice {
     }
 
     show(options = {}) {
-        const settings = { ...this.options, ...options };
+        const settings = resolveOptions(this.options, options);
         const position = POSITIONS.includes(settings.position)
             ? settings.position
             : DEFAULTS.position;
@@ -56,6 +92,7 @@ export default class CJNotice {
         const container = this.#getContainer(position);
         const notice = createElement("article", "cj-notice");
         notice.dataset.noticeId = id;
+        setType(notice, settings.type);
         notice.setAttribute("role", settings.role || "status");
         applyStyle(notice, settings);
 
@@ -107,6 +144,22 @@ export default class CJNotice {
         return this.show(options);
     }
 
+    success(options = {}) {
+        return this.show({ ...options, type: "success" });
+    }
+
+    error(options = {}) {
+        return this.show({ ...options, type: "error" });
+    }
+
+    warning(options = {}) {
+        return this.show({ ...options, type: "warning" });
+    }
+
+    info(options = {}) {
+        return this.show({ ...options, type: "info" });
+    }
+
     dismiss(id, reason = "dismiss") {
         const task = this.tasks.get(id);
         if (!task) return false;
@@ -128,11 +181,12 @@ export default class CJNotice {
 
     confirm(options = {}) {
         if (this.activeConfirm) this.#closeConfirm("replaced");
-        const settings = { ...this.options, ...options };
+        const settings = resolveOptions(this.options, options);
         const previousFocus = document.activeElement;
         const modal = createElement("div", "cj-notice-modal");
         modal.setAttribute("role", "presentation");
         const dialog = createElement("section", "cj-notice-modal__dialog");
+        setType(dialog, settings.type);
         dialog.setAttribute("role", "alertdialog");
         dialog.setAttribute("aria-modal", "true");
         applyStyle(dialog, settings);
@@ -190,6 +244,22 @@ export default class CJNotice {
         return this;
     }
 
+    confirmSuccess(options = {}) {
+        return this.confirm({ ...options, type: "success" });
+    }
+
+    confirmError(options = {}) {
+        return this.confirm({ ...options, type: "error" });
+    }
+
+    confirmWarning(options = {}) {
+        return this.confirm({ ...options, type: "warning" });
+    }
+
+    confirmInfo(options = {}) {
+        return this.confirm({ ...options, type: "info" });
+    }
+
     #getContainer(position) {
         let container = this.containers.get(position);
         if (!container) {
@@ -228,4 +298,4 @@ export default class CJNotice {
     }
 }
 
-export { DEFAULTS, POSITIONS };
+export { DEFAULTS, POSITIONS, TYPE_PRESETS };

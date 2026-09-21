@@ -15,6 +15,8 @@ Plugin vanilla JavaScript para notificações empilháveis e alerts de confirma�
 - Foco inicial, suporte à tecla `Escape` e foco restaurado no fechamento.
 - Callbacks para fechamento, expiração, cancelamento e confirmação.
 - Personalização de cores, borda, raio, ícones e conteúdo.
+- Tipos `success`, `error`, `warning` e `info` com presets de cores e ícones.
+- Métodos convenientes para tasks e confirmações tipadas.
 - Compatível com JavaScript vanilla e módulos ES.
 - Playground interativo e página de documentação com demos funcionais.
 
@@ -45,6 +47,23 @@ notice.task({
     text: "A operação foi realizada.",
 });
 ```
+
+Também é possível usar tipos com presets visuais:
+
+```js
+notice.success({
+    title: "Tudo certo",
+    text: "A operação foi realizada.",
+});
+
+notice.error({ title: "Falha", text: "Não foi possível concluir." });
+notice.warning({ title: "Atenção" });
+notice.info({ title: "Informação" });
+```
+
+Os métodos tipados também podem ser usados com `show()` ou `task()` por meio
+da opção `type`. As opções `background`, `color`, `borderColor` e `icon`
+personalizadas substituem os presets automáticos.
 
 `show(options)` também pode ser usado no lugar de `task(options)`.
 
@@ -106,24 +125,28 @@ notice.dismiss(taskId, "completed");
 
 As tasks aceitam:
 
-| Opção | Descrição |
-| --- | --- |
-| `position` | `top-left`, `top-center`, `top-right`, `bottom-left`, `bottom-center` ou `bottom-right`. |
-| `title` | Título. |
-| `text` | Conteúdo textual. |
-| `icon` | HTML ou SVG confiável para o ícone. |
-| `duration` | Tempo em milissegundos. Use `0` para controle manual. |
-| `background` | Cores do fundo. |
-| `color` | Cores do texto. |
-| `borderColor` | Cor da borda lateral. |
-| `borderWidth` | Espessura da borda lateral. |
-| `radius` | Raio dos cantos. |
-| `onClose` | Callback chamado ao fechar a task. Recebe `{ id, reason }`. |
-| `onExpire` | Callback chamado quando a duração termina. Recebe o ID. |
+| Opção         | Descrição                                                                                |
+| ------------- | ---------------------------------------------------------------------------------------- |
+| `position`    | `top-left`, `top-center`, `top-right`, `bottom-left`, `bottom-center` ou `bottom-right`. |
+| `title`       | Título.                                                                                  |
+| `text`        | Conteúdo textual.                                                                        |
+| `type`        | `success`, `error`, `warning` ou `info`; aplica um preset de cores e ícone.              |
+| `icon`        | HTML ou SVG confiável para o ícone.                                                      |
+| `duration`    | Tempo em milissegundos. Use `0` para controle manual.                                    |
+| `background`  | Cores do fundo.                                                                          |
+| `color`       | Cores do texto.                                                                          |
+| `borderColor` | Cor da borda lateral.                                                                    |
+| `borderWidth` | Espessura da borda lateral.                                                              |
+| `radius`      | Raio dos cantos.                                                                         |
+| `onClose`     | Callback chamado ao fechar a task. Recebe `{ id, reason }`.                              |
+| `onExpire`    | Callback chamado quando a duração termina. Recebe o ID.                                  |
 
 ### `dismiss(id, reason)`
 
 Remove somente a task indicada. Retorna `true` quando a task existe e `false` quando ela não foi encontrada.
+
+Além de `show()` e `task()`, os métodos `success()`, `error()`, `warning()` e
+`info()` criam tasks com o tipo correspondente e retornam o ID da task.
 
 ### `confirm(options)`
 
@@ -134,11 +157,24 @@ notice.confirm({
     title: "Publicar alterações?",
     text: "A nova versão ficará disponível para sua equipe.",
     cancelLabel: "Ainda não",
-    confirmations: [
-        { label: "Publicar", onClick: publicarAlteracoes },
-    ],
+    confirmations: [{ label: "Publicar", onClick: publicarAlteracoes }],
 });
 ```
+
+Confirmações tipadas podem usar `type` ou os métodos convenientes:
+
+```js
+notice.confirmSuccess({
+    title: "Publicar alterações?",
+    confirmations: [{ label: "Publicar", onClick: publicarAlteracoes }],
+});
+
+notice.confirmError({ title: "Excluir registro?" });
+notice.confirmWarning({ title: "Atenção" });
+notice.confirmInfo({ title: "Detalhes" });
+```
+
+Os tipos disponíveis são `success`, `error`, `warning` e `info`.
 
 As opções específicas de confirmação são `cancelLabel`, `onCancel`, `confirmations` e `onConfirmClose`. Cada item de `confirmations` aceita `label` e `onClick`.
 

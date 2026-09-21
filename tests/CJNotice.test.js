@@ -42,6 +42,38 @@ describe("CJNotice", () => {
         expect(document.querySelector(".cj-notice")).toBeNull();
     });
 
+    it("cria tasks tipadas com presets e permite customização", () => {
+        const notice = new CJNotice();
+        const id = notice.success({
+            title: "Salvo",
+            background: "#123456",
+            icon: "OK",
+        });
+        const task = document.querySelector(`[data-notice-id="${id}"]`);
+
+        expect(task.dataset.type).toBe("success");
+        expect(task.style.getPropertyValue("--cj-notice-background")).toBe(
+            "#123456",
+        );
+        expect(task.querySelector(".cj-notice__icon").innerHTML).toBe("OK");
+
+        notice.error({ title: "Falha" });
+        expect(document.querySelector('[data-type="error"]')).not.toBeNull();
+    });
+
+    it("cria confirms tipados pelos métodos convenientes", () => {
+        const notice = new CJNotice();
+
+        notice.confirmWarning({ title: "Atenção" });
+
+        const dialog = document.querySelector(".cj-notice-modal__dialog");
+        expect(dialog.dataset.type).toBe("warning");
+        expect(dialog.style.getPropertyValue("--cj-notice-border-color")).toBe(
+            "#f59e0b",
+        );
+        expect(dialog.querySelector(".cj-notice__icon")).not.toBeNull();
+    });
+
     it("abre confirmação, executa confirmação e restaura o foco", () => {
         const notice = new CJNotice();
         const trigger = document.createElement("button");

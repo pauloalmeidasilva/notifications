@@ -1,6 +1,6 @@
 {
   "name": "cj-notice",
-  "version": "0.1.1-alpha.1",
+  "version": "1.0.0",
   "description": "Plugin vanilla JavaScript para tasks e alerts de confirmação.",
   "type": "module",
   "main": "./dist/cj-notice.umd.js",
