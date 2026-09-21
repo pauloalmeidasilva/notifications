@@ -5,6 +5,10 @@
   "type": "module",
   "main": "./dist/cj-notice.umd.js",
   "module": "./dist/cj-notice.es.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pauloalmeidasilva/notifications"
+  },
   "exports": {
     ".": {
       "import": "./dist/cj-notice.es.js",
@@ -26,7 +30,6 @@
     "confirm",
     "vanilla-js"
   ],
-  "repository": "https://github.com/pauloalmeidasilva/notifications",
   "author": "Paulo Ricardo Almeida da Silva",
   "license": "MIT",
   "scripts": {
