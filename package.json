@@ -1,6 +1,6 @@
 {
   "name": "cj-notice",
-  "version": "0.1.0-alpha.1",
+  "version": "0.1.1-alpha.1",
   "description": "Plugin vanilla JavaScript para tasks e alerts de confirmação.",
   "type": "module",
   "main": "./dist/cj-notice.umd.js",
@@ -26,7 +26,7 @@
     "confirm",
     "vanilla-js"
   ],
-  "author": "Seu Nome",
+  "author": "Paulo Ricardo Almeida da Silva",
   "license": "MIT",
   "scripts": {
     "build": "vite build",

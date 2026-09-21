@@ -76,8 +76,11 @@
 
 .cj-notice > .cj-notice__icon {
     align-self: center;
+    display: grid;
     font-size: 1.35rem;
     line-height: 1;
+    min-width: 40px;
+    place-items: center;
 }
 .cj-notice__title {
     margin: 0;
@@ -129,6 +132,15 @@
 .cj-notice-modal__content {
     display: flex;
     gap: 12px;
+}
+.cj-notice-modal__content > .cj-notice__icon {
+    align-self: center;
+    display: grid;
+    flex: 0 0 auto;
+    font-size: 2rem;
+    line-height: 1;
+    min-width: 40px;
+    place-items: center;
 }
 .cj-notice-modal__title {
     margin: 0;
