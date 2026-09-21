@@ -26,6 +26,7 @@
     "confirm",
     "vanilla-js"
   ],
+  "repository": "https://github.com/pauloalmeidasilva/notifications",
   "author": "Paulo Ricardo Almeida da Silva",
   "license": "MIT",
   "scripts": {
