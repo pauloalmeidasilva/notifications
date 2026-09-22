@@ -393,6 +393,27 @@ A operação foi realizada com sucesso.</textarea
                                 <option>bottom-right</option>
                             </select>
                         </div>
+                        <div class="inline task-only">
+                            <div class="field">
+                                <label for="role">Role ARIA</label>
+                                <select id="role">
+                                    <option value="status" selected>
+                                        status
+                                    </option>
+                                    <option value="alert">alert</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label for="animation">Animação</label>
+                                <select id="animation">
+                                    <option value="slide" selected>
+                                        slide
+                                    </option>
+                                    <option value="fade">fade</option>
+                                    <option value="none">none</option>
+                                </select>
+                            </div>
+                        </div>
                         <div class="field task-only">
                             <label for="duration"
                                 >Duração
@@ -597,6 +618,8 @@ notice.dismiss(taskId, "manual");</code></pre>
                 title: fields.title.value,
                 text: fields.text.value,
                 type: fields.type.value,
+                role: fields.role.value,
+                animation: fields.animation.value,
                 background: fields.background.value,
                 color: fields.color.value,
                 borderColor: fields["border-color"].value,

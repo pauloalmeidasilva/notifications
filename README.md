@@ -13,6 +13,9 @@ Plugin vanilla JavaScript para notificações empilháveis e alerts de confirma�
 - Duração automática ou controle manual com `dismiss()`.
 - Alerts de confirmação com ações de cancelar e confirmar.
 - Foco inicial, suporte à tecla `Escape` e foco restaurado no fechamento.
+- Tasks fecháveis com `Escape`, foco no botão de fechamento e navegação por teclado.
+- Role ARIA configurável (`status` por padrão ou `alert` para mensagens urgentes).
+- Animações configuráveis (`slide`, `fade` ou `none`) com suporte a `prefers-reduced-motion`.
 - Callbacks para fechamento, expiração, cancelamento e confirmação.
 - Personalização de cores, borda, raio, ícones e conteúdo.
 - Tipos `success`, `error`, `warning` e `info` com presets de cores e ícones.
@@ -95,6 +98,8 @@ const notice = new CJNotice({
     duration: 5000,
     position: "bottom-right",
     borderColor: "#2563eb",
+    role: "status",
+    animation: "slide",
 });
 ```
 
@@ -138,12 +143,19 @@ As tasks aceitam:
 | `borderColor` | Cor da borda lateral.                                                                    |
 | `borderWidth` | Espessura da borda lateral.                                                              |
 | `radius`      | Raio dos cantos.                                                                         |
+| `role`        | Role ARIA: `status` (padrão) ou `alert`.                                                 |
+| `animation`   | Animação: `slide` (padrão), `fade` ou `none`.                                            |
 | `onClose`     | Callback chamado ao fechar a task. Recebe `{ id, reason }`.                              |
 | `onExpire`    | Callback chamado quando a duração termina. Recebe o ID.                                  |
 
 ### `dismiss(id, reason)`
 
 Remove somente a task indicada. Retorna `true` quando a task existe e `false` quando ela não foi encontrada.
+
+O botão de fechamento recebe foco quando a task é criada. Com o foco dentro da
+task, `Escape` a dispensa e informa `reason: "escape"` ao callback `onClose`.
+Quando o sistema operacional solicita movimento reduzido, as animações são
+desativadas automaticamente.
 
 Além de `show()` e `task()`, os métodos `success()`, `error()`, `warning()` e
 `info()` criam tasks com o tipo correspondente e retornam o ID da task.

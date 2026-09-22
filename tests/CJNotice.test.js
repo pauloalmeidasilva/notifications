@@ -61,6 +61,69 @@ describe("CJNotice", () => {
         expect(document.querySelector('[data-type="error"]')).not.toBeNull();
     });
 
+    it("foca o fechamento e permite dispensar a task com Escape", () => {
+        vi.useFakeTimers();
+        const notice = new CJNotice();
+        const id = notice.show({ duration: 0 });
+        const task = document.querySelector(`[data-notice-id="${id}"]`);
+        const close = task.querySelector(".cj-notice__close");
+
+        expect(document.activeElement).toBe(close);
+        close.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+
+        expect(notice.tasks.has(id)).toBe(false);
+        expect(task.classList.contains("cj-notice--leaving")).toBe(true);
+    });
+
+    it("configura roles e animações válidos e usa defaults para valores inválidos", () => {
+        const notice = new CJNotice();
+        const statusId = notice.show({ duration: 0 });
+        const alertId = notice.show({
+            duration: 0,
+            role: "alert",
+            animation: "fade",
+        });
+        const fallbackId = notice.show({
+            duration: 0,
+            role: "dialog",
+            animation: "zoom",
+        });
+
+        expect(
+            document
+                .querySelector(`[data-notice-id="${statusId}"]`)
+                .getAttribute("role"),
+        ).toBe("status");
+        expect(
+            document
+                .querySelector(`[data-notice-id="${alertId}"]`)
+                .getAttribute("role"),
+        ).toBe("alert");
+        expect(
+            document.querySelector(`[data-notice-id="${alertId}"]`).dataset
+                .animation,
+        ).toBe("fade");
+        expect(
+            document
+                .querySelector(`[data-notice-id="${fallbackId}"]`)
+                .getAttribute("role"),
+        ).toBe("status");
+        expect(
+            document.querySelector(`[data-notice-id="${fallbackId}"]`).dataset
+                .animation,
+        ).toBe("slide");
+    });
+
+    it("permite desativar a animação", () => {
+        const notice = new CJNotice();
+        const id = notice.show({ duration: 0, animation: "none" });
+
+        expect(
+            document.querySelector(`[data-notice-id="${id}"]`).dataset
+                .animation,
+        ).toBe("none");
+    });
+
     it("cria confirms tipados pelos métodos convenientes", () => {
         const notice = new CJNotice();
 

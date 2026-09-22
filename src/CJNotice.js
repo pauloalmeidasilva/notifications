@@ -15,7 +15,12 @@ const DEFAULTS = {
     borderColor: "#2563eb",
     borderWidth: "4px",
     radius: "8px",
+    role: "status",
+    animation: "slide",
 };
+
+const ANIMATIONS = ["slide", "fade", "none"];
+const ARIA_ROLES = ["status", "alert"];
 
 const TYPE_PRESETS = {
     success: {
@@ -70,6 +75,14 @@ function setType(element, type) {
     if (TYPE_PRESETS[type]) element.dataset.type = type;
 }
 
+function resolveRole(role) {
+    return ARIA_ROLES.includes(role) ? role : DEFAULTS.role;
+}
+
+function resolveAnimation(animation) {
+    return ANIMATIONS.includes(animation) ? animation : DEFAULTS.animation;
+}
+
 export default class CJNotice {
     constructor(options = {}) {
         this.options = { ...DEFAULTS, ...options };
@@ -92,8 +105,9 @@ export default class CJNotice {
         const container = this.#getContainer(position);
         const notice = createElement("article", "cj-notice");
         notice.dataset.noticeId = id;
+        notice.dataset.animation = resolveAnimation(settings.animation);
         setType(notice, settings.type);
-        notice.setAttribute("role", settings.role || "status");
+        notice.setAttribute("role", resolveRole(settings.role));
         applyStyle(notice, settings);
 
         if (settings.icon) {
@@ -121,8 +135,16 @@ export default class CJNotice {
             settings.closeLabel || "Fechar notificação",
         );
         close.addEventListener("click", () => this.dismiss(id, "close"));
+        notice.addEventListener(
+            "keydown",
+            (event) => {
+                if (event.key === "Escape") this.dismiss(id, "escape");
+            },
+            true,
+        );
         notice.append(close);
         container.append(notice);
+        close.focus();
 
         const timer =
             settings.duration > 0
@@ -298,4 +320,4 @@ export default class CJNotice {
     }
 }
 
-export { DEFAULTS, POSITIONS, TYPE_PRESETS };
+export { ANIMATIONS, ARIA_ROLES, DEFAULTS, POSITIONS, TYPE_PRESETS };

@@ -52,7 +52,7 @@
     box-shadow: var(--cj-notice-shadow);
     font-family: var(--cj-notice-font-family);
     pointer-events: auto;
-    animation: cj-notice-in 180ms ease-out;
+    animation: cj-notice-slide-in 180ms ease-out;
     overflow: hidden;
     max-height: 240px;
     transition:
@@ -61,6 +61,15 @@
         padding 180ms ease,
         opacity 180ms ease,
         transform 180ms ease;
+}
+
+.cj-notice[data-animation="fade"] {
+    animation-name: cj-notice-fade-in;
+}
+
+.cj-notice[data-animation="none"] {
+    animation: none;
+    transition: none;
 }
 
 .cj-notice--leaving {
@@ -72,6 +81,18 @@
     opacity: 0;
     transform: translateY(-8px);
     pointer-events: none;
+}
+
+.cj-notice[data-animation="fade"].cj-notice--leaving {
+    transform: none;
+}
+
+.cj-notice[data-animation="none"].cj-notice--leaving {
+    max-height: 0;
+    margin-top: -12px;
+    margin-bottom: -12px;
+    padding-top: 0;
+    padding-bottom: 0;
 }
 
 .cj-notice > .cj-notice__icon {
@@ -170,7 +191,7 @@
     background: #e5e7eb;
 }
 
-@keyframes cj-notice-in {
+@keyframes cj-notice-slide-in {
     from {
         opacity: 0;
         transform: translateY(-8px);
@@ -178,6 +199,14 @@
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+@keyframes cj-notice-fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
     }
 }
 @media (prefers-reduced-motion: reduce) {

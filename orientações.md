@@ -49,11 +49,11 @@ Criar um plugin js que fará o gerenciamento de notificações na tela. Ele ter�
 
 ### Acessibilidade e experiência
 
-- [ ] Permitir fechar tasks com a tecla `Escape`.
-- [ ] Garantir navegação adequada entre ações usando o teclado.
-- [ ] Tornar o `role` ARIA configurável, usando `status` para mensagens comuns e `alert` para erros urgentes.
-- [ ] Permitir configurar animações como `slide`, `fade` e `none`.
-- [ ] Respeitar `prefers-reduced-motion` em todas as animações.
+- [x] Permitir fechar tasks com a tecla `Escape`.
+- [x] Garantir navegação adequada entre ações usando o teclado.
+- [x] Tornar o `role` ARIA configurável, usando `status` para mensagens comuns e `alert` para erros urgentes.
+- [x] Permitir configurar animações como `slide`, `fade` e `none`.
+- [x] Respeitar `prefers-reduced-motion` em todas as animações.
 
 ### Alerts de confirmação
 
