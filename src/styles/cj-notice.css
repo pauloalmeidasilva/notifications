@@ -63,6 +63,21 @@
         transform 180ms ease;
 }
 
+.cj-notice__progress {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: var(--cj-notice-border-color, #2563eb);
+    width: var(--cj-notice-progress, 100%);
+    transition: transform 100ms linear;
+}
+
+.cj-notice[data-paused="true"] .cj-notice__progress {
+    transition: none;
+}
+
 .cj-notice[data-animation="fade"] {
     animation-name: cj-notice-fade-in;
 }
@@ -211,7 +226,8 @@
 }
 @media (prefers-reduced-motion: reduce) {
     .cj-notice,
-    .cj-notice--leaving {
+    .cj-notice--leaving,
+    .cj-notice__progress {
         animation: none;
         transition: none;
     }

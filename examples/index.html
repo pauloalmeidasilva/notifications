@@ -430,6 +430,40 @@ A operação foi realizada com sucesso.</textarea
                                 value="5000"
                             />
                         </div>
+                        <div class="inline task-only">
+                            <div class="field">
+                                <label for="max-visible">Máximo visível</label>
+                                <input
+                                    id="max-visible"
+                                    type="number"
+                                    min="1"
+                                    value="3"
+                                />
+                            </div>
+                            <div class="field">
+                                <label for="stack-order">Ordem da pilha</label>
+                                <select id="stack-order">
+                                    <option value="below" selected>
+                                        below
+                                    </option>
+                                    <option value="above">above</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="inline task-only">
+                            <label
+                                ><input id="pause-on-hover" type="checkbox" />
+                                Pausar no mouse</label
+                            >
+                            <label
+                                ><input
+                                    id="show-progress"
+                                    type="checkbox"
+                                    checked
+                                />
+                                Mostrar progresso</label
+                            >
+                        </div>
                         <div class="inline">
                             <div class="field">
                                 <label for="background">Fundo</label>
@@ -620,6 +654,10 @@ notice.dismiss(taskId, "manual");</code></pre>
                 type: fields.type.value,
                 role: fields.role.value,
                 animation: fields.animation.value,
+                maxVisible: Number(fields["max-visible"].value),
+                stackOrder: fields["stack-order"].value,
+                pauseOnHover: fields["pause-on-hover"].checked,
+                progress: fields["show-progress"].checked,
                 background: fields.background.value,
                 color: fields.color.value,
                 borderColor: fields["border-color"].value,

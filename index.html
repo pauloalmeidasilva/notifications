@@ -212,7 +212,18 @@ notice.task({
                             <code>onExpire</code>. O <code>role</code> pode ser
                             <code>status</code> ou <code>alert</code>, e
                             <code>animation</code> aceita <code>slide</code>,
-                            <code>fade</code> ou <code>none</code>.
+                            <code>fade</code> ou <code>none</code>. Também
+                            aceita <code>pauseOnHover</code>,
+                            <code>progress</code>, <code>maxVisible</code>,
+                            <code>stackOrder</code> e <code>content</code>.
+                        </p>
+                    </div>
+                    <div class="api-row">
+                        <code>update(id, options)</code>
+                        <p>
+                            Atualiza uma task sem removê-la. Tasks acima de
+                            <code>maxVisible</code> aguardam em fila por posição
+                            e são exibidas quando houver espaço.
                         </p>
                     </div>
                     <div class="api-row">

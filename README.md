@@ -16,6 +16,8 @@ Plugin vanilla JavaScript para notificações empilháveis e alerts de confirma�
 - Tasks fecháveis com `Escape`, foco no botão de fechamento e navegação por teclado.
 - Role ARIA configurável (`status` por padrão ou `alert` para mensagens urgentes).
 - Animações configuráveis (`slide`, `fade` ou `none`) com suporte a `prefers-reduced-motion`.
+- Atualização de tasks, pausa opcional no hover, barra de progresso e fila por posição.
+- Conteúdo customizado com elementos DOM ou funções geradoras.
 - Callbacks para fechamento, expiração, cancelamento e confirmação.
 - Personalização de cores, borda, raio, ícones e conteúdo.
 - Tipos `success`, `error`, `warning` e `info` com presets de cores e ícones.
@@ -130,23 +132,28 @@ notice.dismiss(taskId, "completed");
 
 As tasks aceitam:
 
-| Opção         | Descrição                                                                                |
-| ------------- | ---------------------------------------------------------------------------------------- |
-| `position`    | `top-left`, `top-center`, `top-right`, `bottom-left`, `bottom-center` ou `bottom-right`. |
-| `title`       | Título.                                                                                  |
-| `text`        | Conteúdo textual.                                                                        |
-| `type`        | `success`, `error`, `warning` ou `info`; aplica um preset de cores e ícone.              |
-| `icon`        | HTML ou SVG confiável para o ícone.                                                      |
-| `duration`    | Tempo em milissegundos. Use `0` para controle manual.                                    |
-| `background`  | Cores do fundo.                                                                          |
-| `color`       | Cores do texto.                                                                          |
-| `borderColor` | Cor da borda lateral.                                                                    |
-| `borderWidth` | Espessura da borda lateral.                                                              |
-| `radius`      | Raio dos cantos.                                                                         |
-| `role`        | Role ARIA: `status` (padrão) ou `alert`.                                                 |
-| `animation`   | Animação: `slide` (padrão), `fade` ou `none`.                                            |
-| `onClose`     | Callback chamado ao fechar a task. Recebe `{ id, reason }`.                              |
-| `onExpire`    | Callback chamado quando a duração termina. Recebe o ID.                                  |
+| Opção          | Descrição                                                                                |
+| -------------- | ---------------------------------------------------------------------------------------- |
+| `position`     | `top-left`, `top-center`, `top-right`, `bottom-left`, `bottom-center` ou `bottom-right`. |
+| `title`        | Título.                                                                                  |
+| `text`         | Conteúdo textual.                                                                        |
+| `type`         | `success`, `error`, `warning` ou `info`; aplica um preset de cores e ícone.              |
+| `icon`         | HTML ou SVG confiável para o ícone.                                                      |
+| `duration`     | Tempo em milissegundos. Use `0` para controle manual.                                    |
+| `background`   | Cores do fundo.                                                                          |
+| `color`        | Cores do texto.                                                                          |
+| `borderColor`  | Cor da borda lateral.                                                                    |
+| `borderWidth`  | Espessura da borda lateral.                                                              |
+| `radius`       | Raio dos cantos.                                                                         |
+| `role`         | Role ARIA: `status` (padrão) ou `alert`.                                                 |
+| `animation`    | Animação: `slide` (padrão), `fade` ou `none`.                                            |
+| `pauseOnHover` | Pausa o timer e o progresso enquanto o mouse estiver sobre a task.                       |
+| `progress`     | Exibe a barra de progresso em tasks temporizadas; use `false` para ocultá-la.            |
+| `maxVisible`   | Limite de tasks visíveis na posição; excedentes entram na fila FIFO.                     |
+| `stackOrder`   | `below` (padrão) adiciona ao final ou `above` adiciona ao topo da pilha.                 |
+| `content`      | Elemento DOM ou função que retorna um elemento; substitui `title` e `text`.              |
+| `onClose`      | Callback chamado ao fechar a task. Recebe `{ id, reason }`.                              |
+| `onExpire`     | Callback chamado quando a duração termina. Recebe o ID.                                  |
 
 ### `dismiss(id, reason)`
 
@@ -156,6 +163,36 @@ O botão de fechamento recebe foco quando a task é criada. Com o foco dentro da
 task, `Escape` a dispensa e informa `reason: "escape"` ao callback `onClose`.
 Quando o sistema operacional solicita movimento reduzido, as animações são
 desativadas automaticamente.
+
+### `update(id, options)`
+
+Atualiza uma task existente sem trocar seu ID ou elemento. Retorna `true` quando
+a task existe e `false` caso contrário. Alterar `duration` reinicia a contagem.
+
+```js
+const taskId = notice.task({ title: "Enviando", duration: 0 });
+notice.update(taskId, {
+    title: "Enviado",
+    text: "Arquivo concluído.",
+});
+```
+
+Tasks que excedem `maxVisible` aguardam na fila da própria posição. Ao fechar
+uma task visível, a próxima é exibida automaticamente. `pauseOnHover: true`
+pausa tanto o timer quanto a barra de progresso.
+
+Conteúdo seguro pode ser fornecido sem `innerHTML`:
+
+```js
+notice.task({
+    duration: 0,
+    content: () => {
+        const element = document.createElement("strong");
+        element.textContent = "Conteúdo customizado";
+        return element;
+    },
+});
+```
 
 Além de `show()` e `task()`, os métodos `success()`, `error()`, `warning()` e
 `info()` criam tasks com o tipo correspondente e retornam o ID da task.

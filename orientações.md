@@ -39,13 +39,13 @@ Criar um plugin js que fará o gerenciamento de notificações na tela. Ele ter�
 
 - [x] Criar tipos de notificação: `success`, `error`, `warning` e `info`, com cores e ícones padrão.
 - [x] Adicionar métodos convenientes, como `notice.success()` e `notice.error()`, incluindo métodos tipados para confirms.
-- [ ] Criar `update(id, options)` para atualizar uma task existente sem removê-la.
-- [ ] Pausar o temporizador quando o usuário passar o mouse sobre a notificação.
-- [ ] Adicionar uma barra de progresso mostrando o tempo restante da task.
-- [ ] Definir um limite de notificações visíveis com `maxVisible`.
-- [ ] Criar uma fila para notificações excedentes ao limite.
-- [ ] Permitir escolher se as novas notificações aparecem acima ou abaixo da pilha.
-- [ ] Permitir conteúdo customizado com elemento DOM, função geradora ou componente compatível.
+- [x] Criar `update(id, options)` para atualizar uma task existente sem removê-la.
+- [x] Pausar o temporizador quando o usuário passar o mouse sobre a notificação.
+- [x] Adicionar uma barra de progresso mostrando o tempo restante da task.
+- [x] Definir um limite de notificações visíveis com `maxVisible`.
+- [x] Criar uma fila para notificações excedentes ao limite.
+- [x] Permitir escolher se as novas notificações aparecem acima ou abaixo da pilha.
+- [x] Permitir conteúdo customizado com elemento DOM, função geradora ou componente compatível.
 
 ### Acessibilidade e experiência
 

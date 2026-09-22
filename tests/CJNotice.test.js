@@ -124,6 +124,102 @@ describe("CJNotice", () => {
         ).toBe("none");
     });
 
+    it("atualiza uma task sem trocar seu elemento", () => {
+        const notice = new CJNotice();
+        const id = notice.show({ duration: 0, title: "Antes" });
+        const task = document.querySelector(`[data-notice-id="${id}"]`);
+
+        expect(notice.update(id, { title: "Depois", text: "Atualizado" })).toBe(
+            true,
+        );
+        expect(document.querySelector(`[data-notice-id="${id}"]`)).toBe(task);
+        expect(task.querySelector(".cj-notice__title").textContent).toBe(
+            "Depois",
+        );
+        expect(task.querySelector(".cj-notice__text").textContent).toBe(
+            "Atualizado",
+        );
+        expect(notice.update("inexistente", { title: "x" })).toBe(false);
+    });
+
+    it("pausa e retoma o timer durante hover", () => {
+        vi.useFakeTimers();
+        const notice = new CJNotice();
+        const onExpire = vi.fn();
+        const id = notice.show({
+            duration: 1000,
+            pauseOnHover: true,
+            onExpire,
+        });
+        const task = document.querySelector(`[data-notice-id="${id}"]`);
+
+        vi.advanceTimersByTime(400);
+        task.dispatchEvent(new MouseEvent("mouseenter"));
+        vi.advanceTimersByTime(1000);
+        expect(onExpire).not.toHaveBeenCalled();
+        task.dispatchEvent(new MouseEvent("mouseleave"));
+        vi.advanceTimersByTime(600);
+        expect(onExpire).toHaveBeenCalledTimes(1);
+    });
+
+    it("exibe progresso em tasks temporizadas e respeita progress false", () => {
+        vi.useFakeTimers();
+        const notice = new CJNotice();
+        const firstId = notice.show({ duration: 1000 });
+        const secondId = notice.show({ duration: 1000, progress: false });
+
+        expect(
+            document.querySelector(
+                `[data-notice-id="${firstId}"] .cj-notice__progress`,
+            ),
+        ).not.toBeNull();
+        expect(
+            document.querySelector(
+                `[data-notice-id="${secondId}"] .cj-notice__progress`,
+            ),
+        ).toBeNull();
+    });
+
+    it("limita tasks por posição e promove a fila após dismiss", () => {
+        vi.useFakeTimers();
+        const notice = new CJNotice({ maxVisible: 1 });
+        const firstId = notice.show({ duration: 0, title: "Primeira" });
+        const secondId = notice.show({ duration: 0, title: "Segunda" });
+
+        expect(document.querySelectorAll(".cj-notice")).toHaveLength(1);
+        expect(notice.tasks.has(secondId)).toBe(true);
+        notice.dismiss(firstId);
+        vi.advanceTimersByTime(220);
+
+        expect(
+            document.querySelector(`[data-notice-id="${secondId}"]`),
+        ).not.toBeNull();
+    });
+
+    it("respeita a ordem da pilha e aceita conteúdo DOM ou função", () => {
+        const notice = new CJNotice();
+        const custom = document.createElement("strong");
+        custom.textContent = "Conteúdo seguro";
+        const firstId = notice.show({ duration: 0, content: custom });
+        const secondId = notice.show({
+            duration: 0,
+            stackOrder: "above",
+            content: () => {
+                const element = document.createElement("em");
+                element.textContent = "Gerado";
+                return element;
+            },
+        });
+        const tasks = [...document.querySelectorAll(".cj-notice")];
+
+        expect(tasks[0].dataset.noticeId).toBe(secondId);
+        expect(tasks[0].querySelector("em").textContent).toBe("Gerado");
+        expect(tasks[1].dataset.noticeId).toBe(firstId);
+        expect(tasks[1].querySelector("strong").textContent).toBe(
+            "Conteúdo seguro",
+        );
+    });
+
     it("cria confirms tipados pelos métodos convenientes", () => {
         const notice = new CJNotice();
 
