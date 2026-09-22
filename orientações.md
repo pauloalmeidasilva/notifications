@@ -78,11 +78,11 @@ Criar um plugin js que fará o gerenciamento de notificações na tela. Ele ter�
 ## Ordem sugerida de implementação
 
 1. [x] Tipos de notificação e métodos convenientes.
-2. [ ] Método `update()` para tasks existentes.
-3. [ ] Pausa do temporizador ao passar o mouse.
-4. [ ] Barra de progresso.
-5. [ ] Limite e fila de notificações.
-6. [ ] Confirmações assíncronas com estado de carregamento.
-7. [ ] Melhorias de acessibilidade e atalhos de teclado.
+2. [x] Método `update()` para tasks existentes.
+3. [x] Pausa do temporizador ao passar o mouse.
+4. [x] Barra de progresso.
+5. [x] Limite e fila de notificações.
+6. [x] Confirmações assíncronas com estado de carregamento.
+7. [x] Melhorias de acessibilidade e atalhos de teclado.
 8. [ ] Conteúdo customizado e alternativa segura ao `innerHTML`.
 9. [ ] Tipagens TypeScript, testes adicionais e documentação.

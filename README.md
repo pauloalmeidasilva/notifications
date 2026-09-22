@@ -2,7 +2,7 @@
 
 Plugin vanilla JavaScript para notificações empilháveis e alerts de confirmação. A biblioteca oferece uma API pequena para comunicar estados da interface, controlar avisos temporários e proteger ações irreversíveis sem depender de frameworks.
 
-> Versão atual: `0.1.0-alpha.1`
+> Versão atual: `1.1.0`
 
 [![GitHub](https://img.shields.io/badge/GitHub-repositório-172033?logo=github)](https://github.com/pauloalmeidasilva/notifications)
 [![NPM](https://img.shields.io/npm/v/cj-notice?label=NPM)](https://www.npmjs.com/package/cj-notice)
